@@ -55,7 +55,7 @@ jobs:
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@releasesv3-sidecar-test
+        uses: azure/webapps-deploy@test-sidecar-4
         with:
           app-name: 'custom-cintainer-gha-spn'
           slot-name: 'Production'
