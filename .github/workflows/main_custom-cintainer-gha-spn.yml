@@ -55,9 +55,17 @@ jobs:
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@sidecar-testing-3
         with:
           app-name: 'custom-cintainer-gha-spn'
           slot-name: 'Production'
-          images: 'sitecontainerssampleacr.azurecr.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_A0CC9BC301454048B276D44640F4817D }}/sitecontainerssampleacr/test-gha-sidecar:${{ github.sha }}'
+          sitecontainers-config: >-
+            [
+              {
+                "name": "main",
+                "image": "sitecontainerssampleacr.azurecr.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_FF5A71E139634F5B9DDF6B41D8AEF1A6 }}/test/router-app:${{ github.sha }}",
+                "targetPort": 5000,
+                "isMain": true
+              }
+            ]
           
