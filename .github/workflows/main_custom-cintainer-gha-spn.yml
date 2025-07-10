@@ -32,7 +32,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: sitecontainerssampleacr.azurecr.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_A0CC9BC301454048B276D44640F4817D }}/sitecontainerssampleacr/test-gha-sidecar:${{ github.sha }}
+          tags: sitecontainerssampleacr.azurecr.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_A0CC9BC301454048B276D44640F4817D }}/sitecontainerssampleacr/test/hello-app:${{ github.sha }}
           file: ./Dockerfile
 
   deploy:
@@ -63,8 +63,8 @@ jobs:
             [
               {
                 "name": "main",
-                "image": "sitecontainerssampleacr.azurecr.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_FF5A71E139634F5B9DDF6B41D8AEF1A6 }}/test/router-app:${{ github.sha }}",
-                "targetPort": 5000,
+                "image": "sitecontainerssampleacr.azurecr.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_FF5A71E139634F5B9DDF6B41D8AEF1A6 }}/sitecontainerssampleacr/test/hello-app:${{ github.sha }}",
+                "targetPort": 5001,
                 "isMain": true
               }
             ]
