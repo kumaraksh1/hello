@@ -62,7 +62,7 @@ jobs:
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@releases-v2-test1
+        uses: azure/webapps-deploy@releases/v2
         with:
           app-name: 'custom-cintainer-gha-spn'
           slot-name: 'Production'
