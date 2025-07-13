@@ -60,6 +60,11 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7293C43233184A92ADD2A67D8C231525 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_669F7CDB0B9B44B6A03E7700D440449A }}
 
+      - name: Check Node.js and npm version
+        run: |
+          node -v
+          npm -v
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@releases-v2-t1
