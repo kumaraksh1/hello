@@ -6,7 +6,7 @@ name: Build and deploy container app to Azure Web App - custom-container-gha
 on:
   push:
     branches:
-      - main2
+      - main
   workflow_dispatch:
 
 jobs:
