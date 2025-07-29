@@ -31,7 +31,7 @@ jobs:
         with:
           context: ./router-app
           push: true
-          tags: sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/router-app:${{ github.sha }}
+          tags: sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/router-app:091130848cb8cfb239da84092c8e27fc75e8948c
           file: ./router-app/Dockerfile
 
       - name: Build and push container hello-app image to registry
@@ -39,7 +39,7 @@ jobs:
         with:
           context: ./hello-app
           push: true
-          tags: sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/hello-app:${{ github.sha }}
+          tags: sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/hello-app:9ead5e4aa038e0c5c28b111b626a58eabcb8f01d
           file: ./hello-app/Dockerfile
 
   deploy:
@@ -75,13 +75,13 @@ jobs:
             [
             {
                 "name": "main",
-                "image": "sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/router-app:${{ github.sha }}",
+                "image": "sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/router-app:091130848cb8cfb239da84092c8e27fc75e8948c",
                 "targetPort": 5000,
                 "isMain": true
               },
               {
                 "name": "hello-app",
-                "image": "sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/hello-app:${{ github.sha }}",
+                "image": "sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/hello-app:9ead5e4aa038e0c5c28b111b626a58eabcb8f01d",
                 "targetPort": 5001,
                 "isMain": false
               }
