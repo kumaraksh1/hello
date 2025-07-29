@@ -34,13 +34,13 @@ jobs:
           tags: sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/router-app:${{ github.sha }}
           file: ./router-app/Dockerfile
 
-      # - name: Build and push container hello-app image to registry
-      #   uses: docker/build-push-action@v3
-      #   with:
-      #     context: ./hello-app
-      #     push: true
-      #     tags: sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/hello-app:${{ github.sha }}
-      #     file: ./hello-app/Dockerfile
+      - name: Build and push container hello-app image to registry
+        uses: docker/build-push-action@v3
+        with:
+          context: ./hello-app
+          push: true
+          tags: sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/hello-app:${{ github.sha }}
+          file: ./hello-app/Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
@@ -66,23 +66,23 @@ jobs:
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@new-v2
+        uses: azure/webapps-deploy@releases/v3-final-release-sidecar
         with:
           app-name: 'custom-cintainer-gha-spn'
           slot-name: 'Production'
-          images: 'sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/router-app:${{ github.sha }}'
-          # sitecontainers-config: >-
-          #   [
-          #   {
-          #       "name": "main",
-          #       "image": "sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/router-app:${{ github.sha }}",
-          #       "targetPort": 5000,
-          #       "isMain": true
-          #     },
-          #     {
-          #       "name": "hello-app",
-          #       "image": "sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/hello-app:${{ github.sha }}",
-          #       "targetPort": 5001,
-          #       "isMain": false
-          #     }
-          #   ]
+          # images: 'sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/router-app:${{ github.sha }}'
+          sitecontainers-config: >-
+            [
+            {
+                "name": "main",
+                "image": "sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/router-app:${{ github.sha }}",
+                "targetPort": 5000,
+                "isMain": true
+              },
+              {
+                "name": "hello-app",
+                "image": "sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/hello-app:${{ github.sha }}",
+                "targetPort": 5001,
+                "isMain": false
+              }
+            ]
