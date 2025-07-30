@@ -45,7 +45,7 @@ jobs:
       
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@releases/v3-final-release-sidecar-with-design-fix
+        uses: azure/webapps-deploy@releases/v3-final-release-sidecar-fix-2
         with:
           app-name: 'custom-container-gha'
           slot-name: 'Production'
