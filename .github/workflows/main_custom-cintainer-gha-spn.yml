@@ -1,88 +1,26 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
+SiteContainer 
+{
+    name: string, // mandatory
+    image: string, // mandatory
+    isMain: boolean, // mandatory
+    targetPort?: string,
+    startupCommand?: string,
+    authType?: AUTH_TYPE,
+    userName?: string,
+    passwordSecret?: string,
+    userManagedIdentityClientId?: string,
+    environmentVariables?: EnvironmentVariable[],
+    volumeMounts?: VolumeMount[],
+    inheritAppSettingsAndConnectionStrings?: boolean,
+  }
 
-name: Build and deploy container app to Azure Web App - custom-cintainer-gha-spn
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read #This is required for actions/checkout
+AUTH_TYPE is any of the following:
+  Anonymous,
+  UserCredentials,
+  SystemIdentity,
+  UserAssigned
 
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Log in to container registry
-        uses: docker/login-action@v2
-        with:
-          registry: sitecontainerssampleacr.azurecr.io/
-          username: ${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_A0CC9BC301454048B276D44640F4817D }}
-          password: ${{ secrets.AZUREAPPSERVICE_CONTAINERPASSWORD_D5DF9FCBBA0B44269C84675BD466AD75 }}
-
-      - name: Build and push container router-app image to registry
-        uses: docker/build-push-action@v3
-        with:
-          context: ./router-app
-          push: true
-          tags: sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/router-app:091130848cb8cfb239da84092c8e27fc75e8948c
-          file: ./router-app/Dockerfile
-
-      - name: Build and push container hello-app image to registry
-        uses: docker/build-push-action@v3
-        with:
-          context: ./hello-app
-          push: true
-          tags: sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/hello-app:9ead5e4aa038e0c5c28b111b626a58eabcb8f01d
-          file: ./hello-app/Dockerfile
-
-  deploy:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
-
-    needs: build
-
-    steps:
-      
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_B0ECE77061C543C69C011A58636265E0 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7293C43233184A92ADD2A67D8C231525 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_669F7CDB0B9B44B6A03E7700D440449A }}
-
-      - name: Check Node.js and npm version
-        run: |
-          node -v
-          npm -v
-
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'custom-cintainer-gha-spn'
-          slot-name: 'Production'
-          # images: 'sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/router-app:${{ github.sha }}'
-          sitecontainers-config: >-
-            [
-            {
-                "name": "main",
-                "image": "sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/router-app:091130848cb8cfb239da84092c8e27fc75e8948c",
-                "targetPort": 5000,
-                "isMain": true
-              },
-              {
-                "name": "hello-app",
-                "image": "sitecontainerssampleacr.azurecr.io/sitecontainerssampleacr/test/hello-app:9ead5e4aa038e0c5c28b111b626a58eabcb8f01d",
-                "targetPort": 5001,
-                "isMain": false
-              }
-            ]
+type EnvironmentVariable {
+  name: string; // mandatory
+  value: string; // mandatory
+}
